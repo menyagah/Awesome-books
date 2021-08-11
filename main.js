@@ -1,94 +1,74 @@
 /* eslint no-unused-vars: 0 no-undef: 0 */
-const books = [];
+const title = document.querySelector('.title');
+const author = document.querySelector('.author');
+const button = document.querySelector('.btn');
 
-// INTRODUCE LOCAL STORAGE
-let id = 0;
-if (localStorage.getItem('storage')) {
-  const listOfBooks = localStorage.getItem('storage');
-  const parsed = JSON.parse(listOfBooks);
-  id = parsed.length;
-  for (let i = 0; i < parsed.length; i += 1) {
-    books.push(parsed[i]);
+class Book {
+  constructor(title, author) {
+    this.title = title;
+    this.author = author;
+  }
+
+  // REMOVE BOOK FUNCTION
+
+  displayBookList() {
+    this.title = title;
+    const list = document.querySelector('.book-list');
+    list.innerHTML = '';
+
+    // RETRIEVE THE BOOK FROM LOCAL STORAGE IN JSON FORMAT
+    localStorage.getItem('book');
+
+    // CONVERT THE JSON FORMAT BACK TO AN OBJECT
+    const bookArray = JSON.parse(localStorage.getItem('book') || '[]');
+
+    // DESTRUCTURE THE STORED DATA IN THE OBJECT PARSED FROM THE LOCALSTORAGE
+
+    bookArray.forEach(({ title, author, id }) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+                        <td>title: ${title}</td>
+                        <td>Author: ${author}</td>
+                        <td><button type='submit' class='remove' id = '${id}'>Remove</button></td>`;
+
+      list.appendChild(row);
+    });
+  }
+
+  // DELETE BOOK
+  deleteBook(el) {
+    const books = JSON.parse(localStorage.getItem('book'));
+    localStorage.setItem('book', JSON.stringify(books));
+    const { id } = el;
+    localStorage.setItem(
+      'book',
+      JSON.stringify(books.filter((book) => book.id !== id)),
+    );
+    this.displayBookList();
   }
 }
 
-setTimeout(() => {
-  const box = document.getElementById('books');
-  count.id = 'counter';
-  box.appendChild(count);
-}, 1);
+// CREATE A NEW INSTANCE OF BOOK
+const book = new Book(title, author);
 
-// ADD BOOKS TO TABLE LIST
-add = () => {
-  const form = document.querySelector('.book-form');
-  const title = document.querySelector('.title').value;
-  const author = document.querySelector('.author').value;
-  const box = document.getElementById('books');
-  if (title !== '' && author !== '') {
-    const book = {
-      id,
-      title,
-      author,
-    };
-    id += 1;
-    books.push(book);
-    const row = document.createElement('tr');
-    row.id = id;
-    row.innerHTML = `
-                      <td>Title: ${title}</td>
-                      <td>Author: ${author}</td>
-                      <td><button type='button' onclick='remove(${id}),store()'>Remove</button></td>`;
-    box.appendChild(row);
-  } else {
-    alert('Please make sure to fill all fields!');
-  }
-};
+// ADD INPUT VALUE
+button.addEventListener('click', () => {
+  const books = JSON.parse(localStorage.getItem('book') || '[]');
+  const id = Math.random().toString(36).substr(0, 5);
+  books.push({ id, title: title.value, author: author.value });
+  localStorage.setItem('book', JSON.stringify(books));
 
-// REMOVE BOOK FUNCTION
-remove = (n) => {
-  books.splice(n, 1);
-  const toremove = document.getElementById(n);
-  const box = document.getElementById('books');
-  const children = box.getElementsByTagName('tr');
-  for (let i = n; i < children.length; i += 1) {
-    const button = children[i].getElementsByTagName('button');
-    button[0].setAttribute('onclick', `remove(${children[i].id - 1}),store()`);
-    children[i].id -= 1;
-  }
-  box.removeChild(toremove);
-  id -= 1;
-};
+  // CLEAR FIELDS AFTER ADD
+  title.value = '';
+  author.value = '';
+  book.displayBookList();
+});
 
-// STORE ADDED BOOK DATA IN LOCAL STORAGE
-store = () => {
-  const box = document.getElementById('books');
-  const children = box.getElementsByTagName('tr');
-  if (children.length === 0) {
-    id = 0;
-  }
-  localStorage.setItem('storage', JSON.stringify(books));
-  localStorage.setItem('storage2', id);
-};
+// REMOVE BOOK
+const removeBtn = document.querySelector('.book-list');
 
-// POPULATE STORED BOOKS FROM LOCAL STORAGE
-populate = () => {
-  if (localStorage.getItem('storage')) {
-    const listOfBooks = localStorage.getItem('storage');
-    const parsed = JSON.parse(listOfBooks);
-    for (let i = 0; i < parsed.length; i += 1) {
-      const box = document.getElementById('books');
-      const row = document.createElement('tr');
-      row.id = i;
-      row.innerHTML = `
-                      <td>Title ${parsed[i].title}</td>
-                      <td>Author ${parsed[i].author}</td>
-                      <td><button type='button' onclick='remove(${i}),store()'>Remove</button></td>`;
-      box.appendChild(row);
-    }
-  }
-};
+removeBtn.addEventListener('click', (e) => {
+  book.deleteBook(e.target);
+});
 
-// POPULATE BOOKS FROM LOCAL STORAGE AFTER RELOAD
-window.onload = setTimeout(() => {
-  populate();
-}, 1);
+book.displayBookList();
