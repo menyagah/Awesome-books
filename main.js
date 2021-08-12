@@ -2,6 +2,51 @@
 const title = document.querySelector('.title');
 const author = document.querySelector('.author');
 const button = document.querySelector('.btn');
+const dateMonth = document.querySelector('.datetime');
+
+// DATE SECTION
+
+document.addEventListener('DOMContentLoaded', () => {
+  const { DateTime } = luxon;
+  const section = document.createElement('div');
+  section.classList.add('date-time');
+  section.innerHTML = DateTime.now().toLocaleString(DateTime.DATETIME_MED);
+  dateMonth.appendChild(section);
+});
+
+// NAVIGATION SECTION
+
+const listBtn = document.querySelector('#list-link');
+const addBtn = document.querySelector('#addlink');
+const contactBtn = document.querySelector('#contact-link');
+
+const displayList = document.querySelector('#books-display');
+const displayHeading = document.querySelector('#h1');
+const displayInputs = document.querySelector('#show-form');
+const displayContact = document.querySelector('#contacts');
+const displayMainHeader = document.querySelector('#top-text');
+
+listBtn.addEventListener('click', () => {
+  displayList.classList.remove('hide');
+  displayContact.classList.add('hide');
+  displayHeading.classList.add('hide');
+  displayInputs.classList.add('hide');
+  displayMainHeader.classList.remove('hide');
+});
+
+addBtn.addEventListener('click', () => {
+  displayHeading.classList.remove('hide');
+  displayInputs.classList.remove('hide');
+  displayList.classList.add('hide');
+  displayMainHeader.classList.add('hide');
+  displayContact.classList.add('hide');
+});
+
+contactBtn.addEventListener('click', () => {
+  displayContact.classList.remove('hide');
+  displayHeading.classList.add('hide');
+  displayInputs.classList.add('hide');
+});
 
 class Book {
   constructor(title, author) {

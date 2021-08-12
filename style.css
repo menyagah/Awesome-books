@@ -1,22 +1,92 @@
-body {
+body,
+.top-header,
+.book-list,
+.book,
+.nav-links,
+ul,
+li {
   display: flex;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
   flex-direction: column;
   align-items: center;
   font-size: 27px;
   font-family: "Comic Sans MS", "Comic Sans", sans-serif;
   font-weight: 700;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 30px;
+  min-height: calc(100vh - 100px);
+}
+
+.nav-links {
+  justify-content: space-around;
+  width: 500px;
+}
+
+a {
+  text-decoration: none;
+  list-style: none;
+  color: black;
+}
+
+.a-link {
+  padding-left: 10px;
+}
+
+.r-dots {
+  flex-direction: row;
+  width: 130px;
+  text-decoration: none;
+  list-style: none;
+}
+
+.logo {
+  margin-left: 30px;
+}
+
+.line {
+  border-right: 2px solid black;
+}
+
+.top-header,
+.book-list {
+  border: 2px solid black;
+  width: 90%;
+}
+
+.top-header {
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
 }
 
 h1 {
   font-size: 2em;
 }
 
-.book-list {
+.date-time {
+  font-size: 15px;
+}
+
+.datetime {
   display: flex;
+  padding: 20px;
   width: 90%;
+  justify-content: flex-end;
+}
+
+.book-list {
   flex-direction: column;
-  border: 2px solid black;
   box-shadow: 1px 1px 1px 1px;
+  margin-bottom: 10px;
+  flex: 1 0 auto;
 }
 
 .book {
@@ -70,6 +140,12 @@ hr {
   font-weight: bold;
 }
 
+.hide {
+  display: none;
+  opacity: 0;
+  z-index: 0;
+}
+
 .add-btn {
   display: flex;
   justify-content: flex-end;
@@ -79,4 +155,31 @@ hr {
   font-family: "Comic Sans MS", "Comic Sans", sans-serif;
   color: black;
   font-weight: bold;
+}
+
+.contact-section {
+  flex: 1 0 auto;
+}
+
+.contact-info-list {
+  display: block;
+}
+
+.contact-info-list li {
+  margin-left: 30px;
+  display: list-item;
+}
+
+footer {
+  width: 95%;
+  justify-content: flex-start;
+  border: 2px solid black;
+  margin-top: 10px;
+  flex-shrink: 0;
+}
+
+.footer-bar {
+  padding: 0.4em;
+  padding-left: 1em;
+  font-size: 22px;
 }
